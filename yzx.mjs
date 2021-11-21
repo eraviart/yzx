@@ -19,7 +19,7 @@ import {tmpdir} from 'os'
 import fs from 'fs-extra'
 import {createRequire} from 'module'
 import url from 'url'
-import {$, fetch, ProcessOutput, argv} from './index.mjs'
+import {$, ProcessOutput, argv} from './index.mjs'
 
 import './globals.mjs'
 
@@ -80,7 +80,7 @@ async function scriptFromStdin() {
 }
 
 async function scriptFromHttp(remote) {
-  let res = await fetch(remote)
+  let res = await $.fetch(remote)
   if (!res.ok) {
     console.error(`Error: Can't get ${remote}`)
     process.exit(1)

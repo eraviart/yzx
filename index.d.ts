@@ -56,7 +56,6 @@ export class ProcessOutput {
 
 export type QuestionOptions = { choices: string[] }
 
-type cd = (path: string) => void
 type nothrow = (p: ProcessPromise<ProcessOutput>) => ProcessPromise<ProcessOutput>
 type question = (query?: string, options?: QuestionOptions) => Promise<string>
 type sleep = (ms: number) => Promise<void>
@@ -64,9 +63,7 @@ type YZX = () => $
 
 export const $: $
 export const argv: ParsedArgs
-export const cd: cd
 export const chalk: typeof _chalk
-export const fetch: typeof _fetch
 export const fs: typeof _fs
 export const glob: typeof _globby.globby & typeof _globby
 export const globby: typeof _globby.globby & typeof _globby

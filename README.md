@@ -60,7 +60,7 @@ Or via the `yzx` executable:
 yzx ./script.mjs
 ```
 
-All functions (`$`, `cd`, `fetch`, etc) are available straight away 
+All functions (`$`, `sleep`, etc) are available straight away 
 without any imports. 
 
 Or import globals explicitly (for better autocomplete in VS Code).
@@ -139,27 +139,29 @@ class ProcessOutput {
 }
 ```
 
-### Functions
+### Methods
 
-#### `cd()`
+#### `$.cd()`
 
 Changes the current working directory.
 
 ```js
-cd('/tmp')
+$.cd('/tmp')
 await $`pwd` // outputs /tmp
 ```
 
-#### `fetch()`
+#### `$.fetch()`
 
 A wrapper around the [node-fetch](https://www.npmjs.com/package/node-fetch) package.
 
 ```js
-let resp = await fetch('http://wttr.in')
+let resp = await $.fetch('http://wttr.in')
 if (resp.ok) {
   console.log(await resp.text())
 }
 ```
+
+### Functions
 
 #### `question()`
 
@@ -428,17 +430,6 @@ To be able to `yzx` in a web server, the `$` object must not be a global shared 
 import { YZX } from 'yzx'
 
 const $ = YZX()
-await $`pwd`
-...
-```
-
-Also, since the functions `cd` and `fetch` use the global `$` shared object, you should use `$.cd` and `$.fetch` methods instead.
-
-```js
-import { YZX } from 'yzx'
-
-const $ = YZX()
-$.cd("/tmp")
 await $`pwd`
 ...
 ```

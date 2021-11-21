@@ -38,9 +38,7 @@ export function registerGlobals() {
   Object.assign(global, {
     $,
     argv,
-    cd,
     chalk,
-    fetch,
     fs,
     glob,
     globby,
@@ -162,10 +160,6 @@ export function YZX() {
 
 export const $ = YZX()
 
-export function cd(path) {
-  return $.cd(path)
-}
-
 export async function question(query, options) {
   let completer = undefined
   if (Array.isArray(options?.choices)) {
@@ -184,10 +178,6 @@ export async function question(query, options) {
   let answer = await question(query)
   rl.close()
   return answer
-}
-
-export async function fetch(url, init) {
-  return $.fetch(url, init)
 }
 
 export function nothrow(promise) {
