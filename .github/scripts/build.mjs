@@ -1,5 +1,9 @@
 #!/usr/bin/env yzx
 
+import chalk from "chalk"
+import fs from "fs/promises"
+import path from "path"
+
 $.verbose = false
 console.log(chalk.black.bgYellowBright` BUILD `)
 let i = 0,
@@ -8,7 +12,11 @@ let i = 0,
 
 let indexFile = path.join(__dirname, '../../index.mjs')
 let outputDir = path.join(path.dirname(indexFile), 'dist')
-await fs.ensureDir(outputDir)
+try {
+  await fs.access(outputDir)
+} catch(e) {
+  await fs.mkdir(outputDir)
+}
 
 {
   let outputFile = 'bundle.cjs'

@@ -14,16 +14,16 @@ await $`whoami`
 await $`echo ${__dirname}`
 ```
 
+We can use imports here as well:
+
+```js
+const chalk = (await import('chalk')).default
+```
+
 The `__filename` will be pointed to **markdown.md**:
 
 ```js
 console.log(chalk.yellowBright(__filename))
-```
-
-We can use imports here as well:
-
-```js
-await import('chalk')
 ```
 
 A bash code (with `bash` or `sh` language tags) also will be executed:

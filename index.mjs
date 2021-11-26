@@ -12,10 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import fs from 'fs-extra'
+import fs from 'fs'
 import * as globbyModule from 'globby'
-import os from 'os'
-import path from 'path'
 import {promisify, inspect} from 'util'
 import {spawn} from 'child_process'
 import {createInterface} from 'readline'
@@ -25,7 +23,6 @@ import chalk from 'chalk'
 import minimist from 'minimist'
 import psTreeModule from 'ps-tree'
 
-export {chalk, fs, os, path}
 export const sleep = promisify(setTimeout)
 export const argv = minimist(process.argv.slice(2))
 export const globby = Object.assign(function globby(...args) {
@@ -38,13 +35,9 @@ export function registerGlobals() {
   Object.assign(global, {
     $,
     argv,
-    chalk,
-    fs,
     glob,
     globby,
     nothrow,
-    os,
-    path,
     question,
     sleep,
     YZX,
@@ -135,12 +128,15 @@ export function YZX() {
 
   $.cd = function(path) {
     if ($.verbose) console.log('$', colorize(`cd ${path}`))
-    if (!fs.existsSync(path)) {
-      let __from = (new Error().stack.split(/^\s*at\s/m)[2]).trim()
-      console.error(`cd: ${path}: No such directory`)
-      console.error(`    at ${__from}`)
-      process.exit(1)
-    }
+    // try {
+      fs.accessSync(path)
+    // } catch(e) {
+    // console.log("e", e)
+    //   let __from = (new Error().stack.split(/^\s*at\s/m)[2]).trim()
+    //   console.error(`cd: ${path}: No such directory`)
+    //   console.error(`    at ${__from}`)
+    //   process.exit(1)
+    // }
     $.cwd = path
   }
 

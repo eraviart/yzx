@@ -14,9 +14,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {$, ProcessOutput, ProcessPromise, chalk} from '..'
+import {$, ProcessOutput, ProcessPromise} from '..'
 
 void async function () {
+  const chalk = (await import("chalk")).default
   let p: ProcessPromise<ProcessOutput> = $`cat`
   p.pipe(process.stderr)
   p.stdin.write('Hello from TypeScript!\n')

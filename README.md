@@ -229,22 +229,6 @@ if ((await nothrow($`[[ -d path ]]`)).exitCode == 0) {
 
 Following packages are available without importing inside scripts.
 
-#### `chalk` package
-
-The [chalk](https://www.npmjs.com/package/chalk) package.
-
-```js
-console.log(chalk.blue('Hello world!'))
-```
-
-#### `fs` package
-
-The [fs-extra](https://www.npmjs.com/package/fs-extra) package.
-
-```js
-let content = await fs.readFile('./package.json')
-```
-
 #### `globby` package
 
 The [globby](https://github.com/sindresorhus/globby) package.
@@ -259,22 +243,6 @@ Also, globby available via the `glob` shortcut:
 
 ```js
 await $`svgo ${await glob('*.svg')}`
-```
-
-#### `os` package
-
-The [os](https://nodejs.org/api/os.html) package.
-
-```js
-await $`cd ${os.homedir()} && mkdir example`
-```
-
-#### `path` package
-
-The [path](https://nodejs.org/api/path.html) package.
-
-```js
-await $`mkdir ${path.join(basedir, 'output')}`
 ```
 
 #### `minimist` package

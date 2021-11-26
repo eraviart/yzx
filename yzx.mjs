@@ -14,13 +14,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import chalk from 'chalk'
 import {basename, dirname, extname, join, parse, resolve} from 'path'
 import {tmpdir} from 'os'
-import fs from 'fs-extra'
+import fs from 'fs/promises'
 import {createRequire} from 'module'
 import url from 'url'
-import {$, ProcessOutput, argv} from './index.mjs'
 
+import {$, ProcessOutput, argv} from './index.mjs'
 import './globals.mjs'
 
 try {

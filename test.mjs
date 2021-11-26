@@ -12,7 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {strict as assert, deepEqual} from 'assert'
+import {strict as assert} from 'assert'
+import {createReadStream, createWriteStream} from 'fs'
+import fs from 'fs/promises'
+import path from 'path'
+
+import chalk from 'chalk'
 
 { // Only stdout is used during command substitution
   let hello = await $`echo Error >&2; echo Hello`
@@ -114,15 +119,15 @@ import {strict as assert, deepEqual} from 'assert'
 
   try {
     let w = await $`echo foo`
-      .pipe(fs.createWriteStream('/tmp/output.txt'))
+      .pipe(createWriteStream('/tmp/output.txt'))
     assert((await fs.readFile('/tmp/output.txt')).toString() === 'foo\n')
 
     let r = $`cat`
-    fs.createReadStream('/tmp/output.txt')
+    createReadStream('/tmp/output.txt')
       .pipe(r.stdin)
     assert((await r).stdout === 'foo\n')
   } finally {
-    await fs.rm('/tmp/output.txt')
+    await fs.rm('/tmp/output.txt', {force: true})
   }
 }
 
@@ -191,11 +196,11 @@ import {strict as assert, deepEqual} from 'assert'
 
   try {
     await $`echo ${scriptCode}`
-      .pipe(fs.createWriteStream('/tmp/script-from-path', {mode: 0o744}))
+      .pipe(createWriteStream('/tmp/script-from-path', {mode: 0o744}))
     await $`script-from-path`
   } finally {
     process.env.PATH = oldPath
-    fs.rm('/tmp/script-from-path')
+    await fs.rm('/tmp/script-from-path')
   }
 }
 
