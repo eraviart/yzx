@@ -53,8 +53,8 @@ await $`git log ${"--oneline --decorate --color".split(" ")}`
 As everything passed through `${...}` will be escaped, you can't use `~` or glob
 syntax.
 
-In order for this to work the `yzx` provides
-[globby package](../README.md#globby-package).
+In order for this to work with `yzx`, use the
+[globby package](https://www.npmjs.com/package/globby).
 
 For instead of this:
 
@@ -63,9 +63,9 @@ let files = "~/dev/**/*.md" // wrong
 await $`ls ${files}`
 ```
 
-Use `glob` function and `os` package:
+Use `globby` function and `os` package:
 
 ```js
-let files = await glob(os.homedir() + "/dev/**/*.md")
+let files = await globby(os.homedir() + "/dev/**/*.md")
 await $`ls ${files}`
 ```

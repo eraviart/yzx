@@ -14,8 +14,6 @@
 
 import { ChildProcess } from "child_process"
 import { Readable, Writable } from "stream"
-import * as _globby from "globby"
-import { ParsedArgs } from "minimist"
 
 interface $ {
   (pieces: TemplateStringsArray, ...args: any[]): ProcessPromise<ProcessOutput>
@@ -60,7 +58,6 @@ type sleep = (ms: number) => Promise<void>
 type YZX = () => $
 
 export const $: $
-export const argv: ParsedArgs
 export const nothrow: nothrow
 export const question: question
 export const sleep: sleep

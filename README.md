@@ -214,32 +214,6 @@ if ((await nothrow($`[[ -d path ]]`)).exitCode == 0) {
 }
 ```
 
-### Packages
-
-Following packages are available without importing inside scripts.
-
-#### `globby` package
-
-The [globby](https://github.com/sindresorhus/globby) package.
-
-```js
-let packages = await globby(['package.json', 'packages/*/package.json'])
-
-let pictures = globby.globbySync('content/*.(jpg|png)')
-```
-
-Also, globby available via the `glob` shortcut:
-
-```js
-await $`svgo ${await glob('*.svg')}`
-```
-
-#### `minimist` package
-
-The [minimist](https://www.npmjs.com/package/minimist) package.
-
-Available as global const `argv`.
-
 ### Configuration
 
 #### `$.shell`
