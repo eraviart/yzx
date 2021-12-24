@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import fs from "fs"
-import * as globbyModule from "globby"
 import { promisify, inspect } from "util"
 import { spawn } from "child_process"
 import { createInterface } from "readline"
@@ -24,18 +23,12 @@ import psTreeModule from "ps-tree"
 
 export const sleep = promisify(setTimeout)
 export const argv = minimist(process.argv.slice(2))
-export const globby = Object.assign(function globby(...args) {
-  return globbyModule.globby(...args)
-}, globbyModule)
-export const glob = globby
 const psTree = promisify(psTreeModule)
 
 export function registerGlobals() {
   Object.assign(global, {
     $,
     argv,
-    glob,
-    globby,
     nothrow,
     question,
     sleep,

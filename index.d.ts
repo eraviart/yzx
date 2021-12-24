@@ -61,8 +61,6 @@ type YZX = () => $
 
 export const $: $
 export const argv: ParsedArgs
-export const glob: typeof _globby.globby & typeof _globby
-export const globby: typeof _globby.globby & typeof _globby
 export const nothrow: nothrow
 export const question: question
 export const sleep: sleep

@@ -192,19 +192,6 @@ import chalk from "chalk"
 }
 
 {
-  // globby available
-  assert(globby === glob)
-  assert(typeof globby === "function")
-  assert(typeof globby.globbySync === "function")
-  assert(typeof globby.globbyStream === "function")
-  assert(typeof globby.generateGlobTasks === "function")
-  assert(typeof globby.isDynamicPattern === "function")
-  assert(typeof globby.isGitIgnored === "function")
-  assert(typeof globby.isGitIgnoredSync === "function")
-  console.log(chalk.greenBright("globby available"))
-}
-
-{
   // Executes a script from PATH.
   const isWindows = process.platform === "win32"
   const oldPath = process.env.PATH
