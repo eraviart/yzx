@@ -11,7 +11,8 @@
     "./globals": {
       "import": "./globals.mjs",
       "require": "./dist/globals.cjs"
-    }
+    },
+    "./package.json": "./package.json"
   },
   "types": "index.d.ts",
   "bin": {
