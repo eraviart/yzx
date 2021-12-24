@@ -72,35 +72,42 @@ export function YZX() {
 
       let child = spawn(prefix + cmd, {
         cwd,
-        shell: typeof shell === 'string' ? shell : true,
-        stdio: [promise._inheritStdin ? 'inherit' : 'pipe', 'pipe', 'pipe'],
+        shell: typeof shell === "string" ? shell : true,
+        stdio: [promise._inheritStdin ? "inherit" : "pipe", "pipe", "pipe"],
         windowsHide: true,
       })
 
-      child.on('exit', code => {
-        child.on('close', () => {
+      child.on("exit", (code) => {
+        child.on("close", () => {
           let output = new ProcessOutput({
-            code, stdout, stderr, combined,
-            message: `${stderr || '\n'}    at ${__from}\n    exit code: ${code}` + (exitCodeInfo(code) ? ' (' + exitCodeInfo(code) + ')' : '')
-          });
-          (code === 0 || promise._nothrow ? resolve : reject)(output)
+            code,
+            stdout,
+            stderr,
+            combined,
+            message:
+              `${stderr || "\n"}    at ${__from}\n    exit code: ${code}` +
+              (exitCodeInfo(code) ? " (" + exitCodeInfo(code) + ")" : ""),
+          })
+          ;(code === 0 || promise._nothrow ? resolve : reject)(output)
           promise._resolved = true
         })
       })
 
-      let stdout = '', stderr = '', combined = ''
-      let onStdout = data => {
+      let stdout = "",
+        stderr = "",
+        combined = ""
+      let onStdout = (data) => {
         if (verbose) process.stdout.write(data)
         stdout += data
         combined += data
       }
-      let onStderr = data => {
+      let onStderr = (data) => {
         if (verbose) process.stderr.write(data)
         stderr += data
         combined += data
       }
-      if (!promise._piped) child.stdout.on('data', onStdout)
-      child.stderr.on('data', onStderr)
+      if (!promise._piped) child.stdout.on("data", onStdout)
+      child.stderr.on("data", onStderr)
       promise.child = child
       if (promise._postrun) promise._postrun()
     }
@@ -109,27 +116,27 @@ export function YZX() {
   }
 
   $.verbose = !argv.quiet
-  if (typeof argv.shell === 'string') {
+  if (typeof argv.shell === "string") {
     $.shell = argv.shell
-    $.prefix = ''
+    $.prefix = ""
   } else {
     try {
-      $.shell = which.sync('bash')
-      $.prefix = 'set -euo pipefail;'
+      $.shell = which.sync("bash")
+      $.prefix = "set -euo pipefail;"
     } catch (e) {
-      $.prefix = '' // Bash not found, no prefix.
+      $.prefix = "" // Bash not found, no prefix.
     }
   }
-  if (typeof argv.prefix === 'string') {
+  if (typeof argv.prefix === "string") {
     $.prefix = argv.prefix
   }
   $.quote = quote
   $.cwd = undefined
 
-  $.cd = function(path) {
-    if ($.verbose) console.log('$', colorize(`cd ${path}`))
+  $.cd = function (path) {
+    if ($.verbose) console.log("$", colorize(`cd ${path}`))
     // try {
-      fs.accessSync(path)
+    fs.accessSync(path)
     // } catch(e) {
     // console.log("e", e)
     //   let __from = (new Error().stack.split(/^\s*at\s/m)[2]).trim()
@@ -138,17 +145,6 @@ export function YZX() {
     //   process.exit(1)
     // }
     $.cwd = path
-  }
-
-  $.fetch = async function(url, init) {
-    if ($.verbose) {
-      if (typeof init !== 'undefined') {
-        console.log('$', colorize(`fetch ${url}`), init)
-      } else {
-        console.log('$', colorize(`fetch ${url}`))
-      }
-    }
-    return nodeFetch(url, init)
   }
 
   return $
@@ -170,7 +166,8 @@ export async function question(query, options) {
     output: process.stdout,
     completer,
   })
-  const question = (q) => new Promise((resolve) => rl.question(q ?? '', resolve))
+  const question = (q) =>
+    new Promise((resolve) => rl.question(q ?? "", resolve))
   let answer = await question(query)
   rl.close()
   return answer
@@ -209,9 +206,7 @@ export class ProcessPromise extends Promise {
   }
 
   get exitCode() {
-    return this
-      .then(p => p.exitCode)
-      .catch(p => p.exitCode)
+    return this.then((p) => p.exitCode).catch((p) => p.exitCode)
   }
 
   then(onfulfilled, onrejected) {
@@ -220,11 +215,13 @@ export class ProcessPromise extends Promise {
   }
 
   pipe(dest) {
-    if (typeof dest === 'string') {
-      throw new Error('The pipe() method does not take strings. Forgot $?')
+    if (typeof dest === "string") {
+      throw new Error("The pipe() method does not take strings. Forgot $?")
     }
     if (this._resolved === true) {
-      throw new Error('The pipe() method shouldn\'t be called after promise is already resolved!')
+      throw new Error(
+        "The pipe() method shouldn't be called after promise is already resolved!",
+      )
     }
     this._piped = true
     if (dest instanceof ProcessPromise) {
@@ -238,28 +235,26 @@ export class ProcessPromise extends Promise {
     }
   }
 
-  async kill(signal = 'SIGTERM') {
+  async kill(signal = "SIGTERM") {
     let children = await psTree(this.child.pid)
     for (const p of children) {
       try {
         process.kill(p.PID, signal)
-      } catch (e) {
-      }
+      } catch (e) {}
     }
     try {
       process.kill(this.child.pid, signal)
-    } catch (e) {
-    }
+    } catch (e) {}
   }
 }
 
 export class ProcessOutput extends Error {
   #code = 0
-  #stdout = ''
-  #stderr = ''
-  #combined = ''
+  #stdout = ""
+  #stderr = ""
+  #combined = ""
 
-  constructor({code, stdout, stderr, combined, message}) {
+  constructor({ code, stdout, stderr, combined, message }) {
     super(message)
     this.#code = code
     this.#stdout = stdout
@@ -284,89 +279,97 @@ export class ProcessOutput extends Error {
   }
 
   [inspect.custom]() {
-    let stringify = (s, c) => s.length === 0 ? '\'\'' : c(inspect(s))
+    let stringify = (s, c) => (s.length === 0 ? "''" : c(inspect(s)))
     return `ProcessOutput {
   stdout: ${stringify(this.stdout, chalk.green)},
   stderr: ${stringify(this.stderr, chalk.red)},
-  exitCode: ${(this.exitCode === 0 ? chalk.green : chalk.red)(this.exitCode)}${(exitCodeInfo(this.exitCode) ? chalk.grey(' (' + exitCodeInfo(this.exitCode) + ')') : '')}
+  exitCode: ${(this.exitCode === 0 ? chalk.green : chalk.red)(this.exitCode)}${
+      exitCodeInfo(this.exitCode)
+        ? chalk.grey(" (" + exitCodeInfo(this.exitCode) + ")")
+        : ""
+    }
 }`
   }
 }
 
 function printCmd(cmd) {
   if (/\n/.test(cmd)) {
-    console.log(cmd
-      .split('\n')
-      .map((line, i) => (i === 0 ? '$' : '>') + ' ' + colorize(line))
-      .join('\n'))
+    console.log(
+      cmd
+        .split("\n")
+        .map((line, i) => (i === 0 ? "$" : ">") + " " + colorize(line))
+        .join("\n"),
+    )
   } else {
-    console.log('$', colorize(cmd))
+    console.log("$", colorize(cmd))
   }
 }
 
 function colorize(cmd) {
-  return cmd.replace(/^[\w_.-]+(\s|$)/, substr => {
+  return cmd.replace(/^[\w_.-]+(\s|$)/, (substr) => {
     return chalk.greenBright(substr)
   })
 }
 
 function substitute(arg) {
   if (arg instanceof ProcessOutput) {
-    return arg.stdout.replace(/\n$/, '')
+    return arg.stdout.replace(/\n$/, "")
   }
   return `${arg}`
 }
 
 function quote(arg) {
-  if (/^[a-z0-9/_.-]+$/i.test(arg) || arg === '') {
+  if (/^[a-z0-9/_.-]+$/i.test(arg) || arg === "") {
     return arg
   }
-  return `$'`
-    + arg
-      .replace(/\\/g, '\\\\')
-      .replace(/'/g, '\\\'')
-      .replace(/\f/g, '\\f')
-      .replace(/\n/g, '\\n')
-      .replace(/\r/g, '\\r')
-      .replace(/\t/g, '\\t')
-      .replace(/\v/g, '\\v')
-      .replace(/\0/g, '\\0')
-    + `'`
+  return (
+    `$'` +
+    arg
+      .replace(/\\/g, "\\\\")
+      .replace(/'/g, "\\'")
+      .replace(/\f/g, "\\f")
+      .replace(/\n/g, "\\n")
+      .replace(/\r/g, "\\r")
+      .replace(/\t/g, "\\t")
+      .replace(/\v/g, "\\v")
+      .replace(/\0/g, "\\0") +
+    `'`
+  )
 }
 
 function exitCodeInfo(exitCode) {
   return {
-    2: 'Misuse of shell builtins',
-    126: 'Invoked command cannot execute',
-    127: 'Command not found',
-    128: 'Invalid exit argument',
-    129: 'Hangup',
-    130: 'Interrupt',
-    131: 'Quit and dump core',
-    132: 'Illegal instruction',
-    133: 'Trace/breakpoint trap',
-    134: 'Process aborted',
+    2: "Misuse of shell builtins",
+    126: "Invoked command cannot execute",
+    127: "Command not found",
+    128: "Invalid exit argument",
+    129: "Hangup",
+    130: "Interrupt",
+    131: "Quit and dump core",
+    132: "Illegal instruction",
+    133: "Trace/breakpoint trap",
+    134: "Process aborted",
     135: 'Bus error: "access to undefined portion of memory object"',
     136: 'Floating point exception: "erroneous arithmetic operation"',
-    137: 'Kill (terminate immediately)',
-    138: 'User-defined 1',
-    139: 'Segmentation violation',
-    140: 'User-defined 2',
-    141: 'Write to pipe with no one reading',
-    142: 'Signal raised by alarm',
-    143: 'Termination (request to terminate)',
-    145: 'Child process terminated, stopped (or continued*)',
-    146: 'Continue if stopped',
-    147: 'Stop executing temporarily',
-    148: 'Terminal stop signal',
+    137: "Kill (terminate immediately)",
+    138: "User-defined 1",
+    139: "Segmentation violation",
+    140: "User-defined 2",
+    141: "Write to pipe with no one reading",
+    142: "Signal raised by alarm",
+    143: "Termination (request to terminate)",
+    145: "Child process terminated, stopped (or continued*)",
+    146: "Continue if stopped",
+    147: "Stop executing temporarily",
+    148: "Terminal stop signal",
     149: 'Background process attempting to read from tty ("in")',
     150: 'Background process attempting to write to tty ("out")',
-    151: 'Urgent data available on socket',
-    152: 'CPU time limit exceeded',
-    153: 'File size limit exceeded',
+    151: "Urgent data available on socket",
+    152: "CPU time limit exceeded",
+    153: "File size limit exceeded",
     154: 'Signal raised by timer counting virtual time: "virtual timer expired"',
-    155: 'Profiling timer expired',
-    157: 'Pollable event',
-    159: 'Bad syscall',
+    155: "Profiling timer expired",
+    157: "Pollable event",
+    159: "Bad syscall",
   }[exitCode]
 }

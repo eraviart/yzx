@@ -150,17 +150,6 @@ $.cd('/tmp')
 await $`pwd` // outputs /tmp
 ```
 
-#### `$.fetch()`
-
-A wrapper around the [node-fetch](https://www.npmjs.com/package/node-fetch) package.
-
-```js
-let resp = await $.fetch('http://wttr.in')
-if (resp.ok) {
-  console.log(await resp.text())
-}
-```
-
 ### Functions
 
 #### `question()`

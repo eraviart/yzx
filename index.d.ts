@@ -25,7 +25,6 @@ interface $ {
   shell: string
   cd: (path: string) => void
   cwd: string
-  fetch: typeof _fetch
   prefix: string
   quote: (input: string) => string
 }
