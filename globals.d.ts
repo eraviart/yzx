@@ -6,7 +6,7 @@ import {
   question,
   sleep,
   YZX,
-} from '.'
+} from "."
 
 declare global {
   var $: $

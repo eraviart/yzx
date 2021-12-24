@@ -1,7 +1,7 @@
 # Pipelines
 
-> You can run this markdown file: 
-> 
+> You can run this markdown file:
+>
 > ```
 > yzx docs/pipelines.md
 > ```
@@ -10,8 +10,7 @@ The `yzx` supports Node.js streams and special `pipe()` method can be used to
 redirect stdout.
 
 ```js
-await $`echo "Hello, stdout!"`
-  .pipe(fs.createWriteStream('/tmp/output.txt'))
+await $`echo "Hello, stdout!"`.pipe(fs.createWriteStream("/tmp/output.txt"))
 
 await $`cat /tmp/output.txt`
 ```
@@ -21,9 +20,9 @@ write to child process too:
 
 ```js
 let p = $`read var; echo "$var";`
-p.stdin.write('Hello, stdin!\n')
+p.stdin.write("Hello, stdin!\n")
 
-let {stdout} = await p
+let { stdout } = await p
 ```
 
 Pipes can be used to show real-time output of programs:
@@ -31,8 +30,7 @@ Pipes can be used to show real-time output of programs:
 ```js
 $.verbose = false
 
-await $`echo 1; sleep 1; echo 2; sleep 1; echo 3;`
-  .pipe(process.stdout)
+await $`echo 1; sleep 1; echo 2; sleep 1; echo 3;`.pipe(process.stdout)
 ```
 
 Pipe both stdout and stderr:
@@ -58,6 +56,6 @@ Use combinations of `pipe()` and [`nothrow()`](https://github.com/eraviart/yzx#n
 
 ```js
 await $`find ./examples -type f -print0`
-  .pipe(nothrow($`xargs -0 grep ${'missing' + 'part'}`))
+  .pipe(nothrow($`xargs -0 grep ${"missing" + "part"}`))
   .pipe($`wc -l`)
 ```

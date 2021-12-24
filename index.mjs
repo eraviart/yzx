@@ -1,27 +1,26 @@
 // Copyright 2021 Google LLC
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     https://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import fs from 'fs'
-import * as globbyModule from 'globby'
-import {promisify, inspect} from 'util'
-import {spawn} from 'child_process'
-import {createInterface} from 'readline'
-import {default as nodeFetch} from 'node-fetch'
-import which from 'which'
-import chalk from 'chalk'
-import minimist from 'minimist'
-import psTreeModule from 'ps-tree'
+import fs from "fs"
+import * as globbyModule from "globby"
+import { promisify, inspect } from "util"
+import { spawn } from "child_process"
+import { createInterface } from "readline"
+import which from "which"
+import chalk from "chalk"
+import minimist from "minimist"
+import psTreeModule from "ps-tree"
 
 export const sleep = promisify(setTimeout)
 export const argv = minimist(process.argv.slice(2))
@@ -46,14 +45,15 @@ export function registerGlobals() {
 
 export function YZX() {
   function $(pieces, ...args) {
-    let {verbose, cwd, shell, prefix} = $
-    let __from = (new Error().stack.split(/^\s*at\s/m)[2]).trim()
+    let { verbose, cwd, shell, prefix } = $
+    let __from = new Error().stack.split(/^\s*at\s/m)[2].trim()
 
-    let cmd = pieces[0], i = 0
+    let cmd = pieces[0],
+      i = 0
     while (i < args.length) {
       let s
       if (Array.isArray(args[i])) {
-        s = args[i].map(x => $.quote(substitute(x))).join(' ')
+        s = args[i].map((x) => $.quote(substitute(x))).join(" ")
       } else {
         s = $.quote(substitute(args[i]))
       }
@@ -61,7 +61,7 @@ export function YZX() {
     }
 
     let resolve, reject
-    let promise = new ProcessPromise((...args) => [resolve, reject] = args)
+    let promise = new ProcessPromise((...args) => ([resolve, reject] = args))
 
     promise._run = () => {
       if (promise.child) return

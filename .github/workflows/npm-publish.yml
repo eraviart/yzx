@@ -17,5 +17,5 @@ jobs:
       - run: npm test
       - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> .npmrc
         env:
-          AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}      
+          AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       - run: npm publish

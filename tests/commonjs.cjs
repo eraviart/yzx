@@ -1,5 +1,5 @@
-let {$} = require('..')
+let { $ } = require("..")
 
-void async function () {
+void (async function () {
   await $`echo Hello from CommonJS!`
-}()
+})()
