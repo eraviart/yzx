@@ -222,6 +222,13 @@ import chalk from "chalk"
   assert.match(stdout, /Hello from CommonJS/)
 }
 
+{ // The kill() method works.
+  let p = $`sleep 1000`
+  setTimeout(() => {
+    p.kill()
+  }, 100)
+}
+
 {
   // require() is working in ESM
   const { name, version } = require("./package.json")
