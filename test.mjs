@@ -101,11 +101,6 @@ import chalk from "chalk"
 }
 
 {
-  // require() is working from stdin
-  await $`node yzx.mjs <<< 'require("./package.json").name'`
-}
-
-{
   // Markdown scripts are working
   await $`node yzx.mjs docs/markdown.md`
 }
@@ -216,24 +211,11 @@ import chalk from "chalk"
   }
 }
 
-{
-  // CommonJS is working
-  let { stdout } = await $`node tests/commonjs.cjs`
-  assert.match(stdout, /Hello from CommonJS/)
-}
-
 { // The kill() method works.
   let p = $`sleep 1000`
   setTimeout(() => {
     p.kill()
   }, 100)
-}
-
-{
-  // require() is working in ESM
-  const { name, version } = require("./package.json")
-  assert(typeof name === "string")
-  console.log(chalk.black.bgYellowBright(` ${name} version is ${version} `))
 }
 
 console.log(chalk.greenBright(" 🍺 Success!"))

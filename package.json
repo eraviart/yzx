@@ -2,16 +2,10 @@
   "name": "yzx",
   "version": "6.0.4",
   "description": "A tool for writing better concurrent scripts",
-  "main": "./dist/index.cjs",
+  "main": "./index.mjs",
   "exports": {
-    ".": {
-      "import": "./index.mjs",
-      "require": "./dist/index.cjs"
-    },
-    "./globals": {
-      "import": "./globals.mjs",
-      "require": "./dist/globals.cjs"
-    },
+    ".": "./index.mjs",
+    "./globals": "./globals.mjs",
     "./package.json": "./package.json"
   },
   "types": "index.d.ts",
@@ -21,9 +15,9 @@
   "engines": {
     "node": ">= 14.13.1"
   },
+  "type": "module",
   "scripts": {
-    "test": "node yzx.mjs test.mjs",
-    "build": "node yzx.mjs .github/scripts/build.mjs"
+    "test": "node yzx.mjs test.mjs"
   },
   "dependencies": {
     "@types/minimist": "^1.2.2",
@@ -34,18 +28,12 @@
     "ps-tree": "^1.2.0",
     "which": "^3.0.0"
   },
-  "devDependencies": {
-    "@rollup/plugin-commonjs": "^24.0.0",
-    "@rollup/plugin-node-resolve": "^15.0.1",
-    "rollup": "^3.10.0"
-  },
   "publishConfig": {
     "access": "public"
   },
   "files": [
     "*.mjs",
-    "*.d.ts",
-    "dist"
+    "*.d.ts"
   ],
   "repository": "eraviart/yzx",
   "author": "Anton Medvedev <anton@medv.io>",

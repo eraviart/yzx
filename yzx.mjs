@@ -104,7 +104,7 @@ async function importPath(filepath, origin = filepath) {
   }
   if (ext === ".ts") {
     let { dir, name } = parse(filepath)
-    let outFile = join(dir, name + ".cjs")
+    let outFile = join(dir, name + ".mjs")
     await compile(filepath)
     await fs.rename(join(dir, name + ".js"), outFile)
     let wait = importPath(outFile, filepath)
@@ -113,8 +113,7 @@ async function importPath(filepath, origin = filepath) {
   }
   let __filename = resolve(origin)
   let __dirname = dirname(__filename)
-  let require = createRequire(origin)
-  Object.assign(global, { __filename, __dirname, require })
+  Object.assign(global, { __filename, __dirname })
   await import(url.pathToFileURL(filepath))
 }
 
@@ -184,7 +183,7 @@ function transformMarkdown(source) {
 async function compile(input) {
   let v = $.verbose
   $.verbose = false
-  let tsc = $`npm_config_yes=true npx -p typescript tsc --target esnext --lib esnext --module commonjs --moduleResolution node ${input}`
+  let tsc = $`npm_config_yes=true npx -p typescript tsc --target esnext --lib esnext --module esnext --moduleResolution node ${input}`
   $.verbose = v
   let i = 0,
     spinner = setInterval(
@@ -207,7 +206,7 @@ function printUsage() {
 
  Usage:
    yzx [options] <script>
- 
+
  Options:
    --quiet            : don't echo commands
    --shell=<path>     : custom shell binary

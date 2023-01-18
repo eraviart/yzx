@@ -20,9 +20,9 @@ let name = 'foo bar'
 await $`mkdir /tmp/${name}`
 ```
 
-Bash is great, but when it comes to writing scripts, 
+Bash is great, but when it comes to writing scripts,
 people usually choose a more convenient programming language.
-JavaScript is a perfect choice, but standard Node.js library 
+JavaScript is a perfect choice, but standard Node.js library
 requires additional hassle before using. The `yzx` package provides
 useful wrappers around `child_process`, escapes arguments and
 gives sensible defaults.
@@ -39,7 +39,7 @@ Node.js >= 14.13.1
 
 ## Documentation
 
-Write your scripts in a file with `.mjs` extension in order to 
+Write your scripts in a file with `.mjs` extension in order to
 be able to use `await` on top level. If you prefer the `.js` extension,
 wrap your scripts in something like `void async function () {...}()`.
 
@@ -60,8 +60,8 @@ Or via the `yzx` executable:
 yzx ./script.mjs
 ```
 
-All functions (`$`, `sleep`, etc) are available straight away 
-without any imports. 
+All functions (`$`, `sleep`, etc) are available straight away
+without any imports.
 
 Or import globals explicitly (for better autocomplete in VS Code).
 
@@ -81,7 +81,7 @@ let name = 'foo & bar'
 await $`mkdir ${name}`
 ```
 
-**There is no need to add extra quotes.** Read more about it in 
+**There is no need to add extra quotes.** Read more about it in
 [quotes](docs/quotes.md).
 
 You can pass an array of arguments if needed:
@@ -166,7 +166,7 @@ let token = await question('Choose env variable: ', {
 ```
 
 In second argument, array of choices for Tab autocompletion can be specified.
-  
+
 ```ts
 function question(query?: string, options?: QuestionOptions): Promise<string>
 type QuestionOptions = { choices: string[] }
@@ -236,36 +236,25 @@ Or use a CLI argument: `--prefix='set -e;'`
 
 #### `$.quote`
 
-Specifies a function for escaping special characters during 
+Specifies a function for escaping special characters during
 command substitution.
 
 #### `$.verbose`
 
 Specifies verbosity. Default is `true`.
 
-In verbose mode, the `yzx` prints all executed commands alongside with their 
+In verbose mode, the `yzx` prints all executed commands alongside with their
 outputs.
 
 Or use a CLI argument `--quiet` to set `$.verbose = false`.
 
-### Polyfills 
+### Polyfills
 
 #### `__filename` & `__dirname`
 
 In [ESM](https://nodejs.org/api/esm.html) modules, Node.js does not provide
 `__filename` and `__dirname` globals. As such globals are really handy in scripts,
 `yzx` provides these for use in `.mjs` files (when using the `yzx` executable).
-
-#### `require()`
-
-In [ESM](https://nodejs.org/api/modules.html#modules_module_createrequire_filename)
-modules, the `require()` function is not defined.
-The `yzx` provides `require()` function, so it can be used with imports in `.mjs`
-files (when using `yzx` executable).
-
-```js
-let {version} = require('./package.json')
-```
 
 ### FAQ
 
@@ -305,7 +294,7 @@ module.
 
 #### Markdown scripts
 
-The `yzx` can execute scripts written in markdown 
+The `yzx` can execute scripts written in markdown
 ([docs/markdown.md](docs/markdown.md)):
 
 ```bash
@@ -313,10 +302,10 @@ yzx docs/markdown.md
 ```
 
 #### TypeScript scripts
- 
+
 ```ts
 import {$} from 'yzx'
-// Or 
+// Or
 import 'yzx/globals'
 
 void async function () {
