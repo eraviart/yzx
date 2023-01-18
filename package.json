@@ -1,6 +1,6 @@
 {
   "name": "yzx",
-  "version": "6.0.3",
+  "version": "6.0.4",
   "description": "A tool for writing better concurrent scripts",
   "main": "./dist/index.cjs",
   "exports": {
